@@ -36,4 +36,15 @@ export class HotspotsResolver {
       total: result.total || 0,
     };
   }
+
+  @Query(() => Hotspot, { name: 'hotspot' })
+  findOne(
+    @Args('id', { type: () => String, nullable: true }) id?: string,
+    @Args('uuid', { type: () => String, nullable: true }) uuid?: string,
+  ) {
+    if (!id && !uuid) {
+      throw new Error('Either id or uuid must be provided');
+    }
+    return this.hotspotsService.findOne(id || uuid);
+  }
 }
