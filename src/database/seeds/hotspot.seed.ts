@@ -31,6 +31,8 @@ async function seed() {
         record.fecha_instalacion === 'NA' ? null : record.fecha_instalacion;
       hotspot.latitude = parseFloat(record.latitud);
       hotspot.longitude = parseFloat(record.longitud);
+      hotspot.neighborhood = record.colonia;
+      hotspot.borough = record.alcaldia;
 
       batch.push(hotspot);
       if (batch.length >= batchSize) {

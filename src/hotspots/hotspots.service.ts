@@ -4,7 +4,7 @@ import Hotspot from './entities/hotspot.entity';
 
 @Injectable()
 export class HotspotsService {
-  async findAll(page: number, limit: number, withTotal = false) {
+  async findAll(page: number, limit: number) {
     const repository = await getDataSourceRepository(Hotspot);
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
@@ -12,7 +12,7 @@ export class HotspotsService {
         skip,
         take: limit,
       }),
-      withTotal ? repository.count() : Promise.resolve(undefined),
+      repository.count(),
     ]);
 
     return { data, total };

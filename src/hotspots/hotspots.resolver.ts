@@ -29,10 +29,8 @@ export class HotspotsResolver {
     page: number = DEFAULT_PAGE,
     @Args('limit', { type: () => Int, defaultValue: DEFAULT_LIMIT })
     limit: number = DEFAULT_LIMIT,
-    @Args('withTotal', { type: () => Boolean, defaultValue: true })
-    withTotal?: boolean,
   ): Promise<HotspotPaginatedResponse> {
-    const result = await this.hotspotsService.findAll(page, limit, withTotal);
+    const result = await this.hotspotsService.findAll(page, limit);
     return {
       data: result.data as Hotspot[],
       total: result.total || 0,
