@@ -47,4 +47,23 @@ export class HotspotsResolver {
     }
     return this.hotspotsService.findOne(id, uuid);
   }
+
+  @Query(() => HotspotPaginatedResponse, { name: 'hotspotsByNeighborhood' })
+  async findByNeighborhood(
+    @Args('neighborhood', { type: () => String }) neighborhood: string,
+    @Args('page', { type: () => Int, defaultValue: DEFAULT_PAGE })
+    page: number,
+    @Args('limit', { type: () => Int, defaultValue: DEFAULT_LIMIT })
+    limit: number,
+  ): Promise<HotspotPaginatedResponse> {
+    const result = await this.hotspotsService.findByNeighborhood(
+      neighborhood,
+      page,
+      limit,
+    );
+    return {
+      data: result.data as Hotspot[],
+      total: result.total,
+    };
+  }
 }

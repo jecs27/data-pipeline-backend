@@ -38,4 +38,19 @@ export class HotspotsService {
 
     return null;
   }
+
+  async findByNeighborhood(neighborhood: string, page: number, limit: number) {
+    const repository = await getDataSourceRepository(Hotspot);
+    const skip = (page - 1) * limit;
+    const [data, total] = await Promise.all([
+      repository.find({
+        where: { neighborhood },
+        skip,
+        take: limit,
+      }),
+      repository.count({ where: { neighborhood } }),
+    ]);
+
+    return { data, total };
+  }
 }
