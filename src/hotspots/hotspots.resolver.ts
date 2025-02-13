@@ -1,4 +1,12 @@
-import { Resolver, Query, Args, ObjectType, Field, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  ObjectType,
+  Field,
+  Int,
+  Float,
+} from '@nestjs/graphql';
 import { HotspotsService } from './hotspots.service';
 import Hotspot from './entities/hotspot.entity';
 import { PaginatedResponse } from '../utils/interfaces';
@@ -9,6 +17,9 @@ const DEFAULT_PAGE = process.env.DEFAULT_PAGE
 const DEFAULT_LIMIT = process.env.DEFAULT_LIMIT
   ? parseInt(process.env.DEFAULT_LIMIT)
   : 10;
+
+// Maximum distance in kilometers for proximity search
+const MAX_DISTANCE_KM = 10;
 
 @ObjectType()
 class HotspotPaginatedResponse implements PaginatedResponse<Hotspot> {
@@ -60,6 +71,30 @@ export class HotspotsResolver {
       neighborhood,
       page,
       limit,
+    );
+    return {
+      data: result.data as Hotspot[],
+      total: result.total,
+    };
+  }
+
+  @Query(() => HotspotPaginatedResponse, { name: 'hotspotsByProximity' })
+  async findByProximity(
+    @Args('latitude', { type: () => Float }) latitude: number,
+    @Args('longitude', { type: () => Float }) longitude: number,
+    @Args('page', { type: () => Int, defaultValue: DEFAULT_PAGE })
+    page: number,
+    @Args('limit', { type: () => Int, defaultValue: DEFAULT_LIMIT })
+    limit: number,
+    @Args('distance', { type: () => Float, defaultValue: MAX_DISTANCE_KM })
+    distance: number,
+  ): Promise<HotspotPaginatedResponse> {
+    const result = await this.hotspotsService.findByProximity(
+      latitude,
+      longitude,
+      page,
+      limit,
+      distance,
     );
     return {
       data: result.data as Hotspot[],
