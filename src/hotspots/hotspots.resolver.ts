@@ -45,6 +45,6 @@ export class HotspotsResolver {
     if (!id && !uuid) {
       throw new Error('Either id or uuid must be provided');
     }
-    return this.hotspotsService.findOne(id || uuid);
+    return this.hotspotsService.findOne(id, uuid);
   }
 }

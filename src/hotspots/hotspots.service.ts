@@ -18,10 +18,24 @@ export class HotspotsService {
     return { data, total };
   }
 
-  async findOne(idOrUuid: string) {
+  async findOne(id?: string, uuid?: string) {
     const repository = await getDataSourceRepository(Hotspot);
-    return repository.findOne({
-      where: [{ id: idOrUuid }, { uuid: idOrUuid }],
-    });
+
+    if (id) {
+      const hotspotById = await repository.findOne({
+        where: { id },
+      });
+      if (hotspotById) {
+        return hotspotById;
+      }
+    }
+
+    if (uuid) {
+      return repository.findOne({
+        where: { uuid },
+      });
+    }
+
+    return null;
   }
 }
