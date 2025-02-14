@@ -18,12 +18,11 @@ COPY package*.json ./
 RUN npm ci --legacy-peer-deps --only=production
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/.env ./.env
 COPY --from=builder /app/src/database ./src/database
 
-# Copy .env.example as fallback if .env doesn't exist
+# COPY .env.example to create .env if it doesn't exist
 COPY .env.example ./.env.example
-RUN if [ ! -f .env ]; then cp .env.example .env; fi
+RUN cp .env.example .env
 
 # Add user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
