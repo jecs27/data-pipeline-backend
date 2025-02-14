@@ -73,8 +73,6 @@ Service --> TypeORM[TypeORM]
 TypeORM --> PostgreSQL[(PostgreSQL)]
 ```
 
-
-
 ## Desarrollo de la Solución
 
 ### Características Principales

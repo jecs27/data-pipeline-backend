@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { getDataSourceRepository } from 'src/database/create-database';
+import { getDataSourceRepository } from '../database/create-database';
 import Hotspot from './entities/hotspot.entity';
 
 // Earth's radius in kilometers used for Haversine formula
@@ -21,24 +21,14 @@ export class HotspotsService {
     return { data, total };
   }
 
-  async findOne(id?: string, uuid?: string) {
+  async findOne(id?: string) {
     const repository = await getDataSourceRepository(Hotspot);
-
-    if (id) {
-      const hotspotById = await repository.findOne({
-        where: { id },
-      });
-      if (hotspotById) {
-        return hotspotById;
-      }
+    const hotspotById = await repository.findOne({
+      where: { id },
+    });
+    if (hotspotById) {
+      return hotspotById;
     }
-
-    if (uuid) {
-      return repository.findOne({
-        where: { uuid },
-      });
-    }
-
     return null;
   }
 
@@ -67,9 +57,9 @@ export class HotspotsService {
     const repository = await getDataSourceRepository(Hotspot);
     const skip = (page - 1) * limit;
 
+    // Haversine formula to calculate the distance between two points on a sphere
     const baseQuery = repository
       .createQueryBuilder('hotspot')
-      .select('hotspot.*')
       .addSelect(
         `(
           :earthRadius * acos(
