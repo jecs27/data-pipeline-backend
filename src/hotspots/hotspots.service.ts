@@ -94,6 +94,20 @@ export class HotspotsService {
       baseQuery.clone().getCount(),
     ]);
 
-    return { data, total };
+    // Map raw data to Hotspot entities
+    const hotspots = data.map((rawHotspot) => {
+      const hotspot = new Hotspot();
+      Object.assign(hotspot, {
+        id: rawHotspot.hotspot_id,
+        program: rawHotspot.hotspot_program,
+        latitude: rawHotspot.hotspot_latitude,
+        longitude: rawHotspot.hotspot_longitude,
+        neighborhood: rawHotspot.hotspot_neighborhood,
+        borough: rawHotspot.hotspot_borough,
+      });
+      return hotspot;
+    });
+
+    return { data: hotspots, total };
   }
 }

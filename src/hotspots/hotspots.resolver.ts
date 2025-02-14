@@ -100,7 +100,10 @@ export class HotspotsResolver {
       distance,
     );
     return {
-      data: result.data as Hotspot[],
+      data: result.data.filter(
+        (hotspot): hotspot is Hotspot =>
+          hotspot !== null && hotspot.id !== null && hotspot.id !== undefined,
+      ),
       total: result.total,
     };
   }

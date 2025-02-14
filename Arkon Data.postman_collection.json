@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "5bf9ec2e-eb05-41ec-8182-62dad4ffec6c",
+		"name": "Arkon Data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6486894"
+	},
+	"item": [
+		{
+			"name": "GraphQL",
+			"item": [
+				{
+					"name": "get all hotspots",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "xi8bapkc0qjd9uahsd",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  hotspots {\n    total\n    data {\n        uuid\n        id\n        program\n        latitude\n        longitude\n        neighborhood\n        borough\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://data-pipeline-backend-jt1f.onrender.com/graphql",
+							"protocol": "https",
+							"host": [
+								"data-pipeline-backend-jt1f",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get hotspots by id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "xi8bapkc0qjd9uahsd",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  hotspot(id: \"AICMT1-GW001\") {\n    id\n    program\n    latitude\n    longitude\n    neighborhood\n    borough\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://data-pipeline-backend-jt1f.onrender.com/graphql",
+							"protocol": "https",
+							"host": [
+								"data-pipeline-backend-jt1f",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get hotspots by neighborhood",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "xi8bapkc0qjd9uahsd",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  hotspotsByNeighborhood(\n    neighborhood: \"PEÑON DE LOS BAÑOS\"\n    limit: 100\n  ) {\n    total\n    data {\n        id\n        program\n        latitude\n        longitude\n        neighborhood\n        borough\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://data-pipeline-backend-jt1f.onrender.com/graphql",
+							"protocol": "https",
+							"host": [
+								"data-pipeline-backend-jt1f",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get hotspots by proximity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "xi8bapkc0qjd9uahsd",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  hotspotsByProximity(\n    latitude: 19.3236251\n    longitude: -99.1469772\n    limit: 1000\n  ) {\n    total\n    data {\n        id\n        program\n        latitude\n        longitude\n        neighborhood\n        borough\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://data-pipeline-backend-jt1f.onrender.com/graphql",
+							"protocol": "https",
+							"host": [
+								"data-pipeline-backend-jt1f",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "healthCheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://data-pipeline-backend-jt1f.onrender.com/",
+					"protocol": "https",
+					"host": [
+						"data-pipeline-backend-jt1f",
+						"onrender",
+						"com"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
