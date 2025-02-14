@@ -21,6 +21,10 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/.env ./.env
 COPY --from=builder /app/src/database ./src/database
 
+# Copy .env.example as fallback if .env doesn't exist
+COPY .env.example ./.env.example
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
 # Add user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
@@ -36,4 +40,7 @@ USER appuser
 EXPOSE 3000
 
 # Run migrations and start app
-CMD ["/bin/sh", "-c", "/wait-for-it.sh $DATABASE_HOST:$DATABASE_PORT -- npm run migration:run && npm run start:prod"]
+CMD ["/bin/sh", "-c", "\
+    /wait-for-it.sh ${DATABASE_HOST:-localhost}:${DATABASE_PORT:-5432} -- \
+    npm run migration:run && \
+    npm run start:prod"]
