@@ -49,14 +49,11 @@ export class HotspotsResolver {
   }
 
   @Query(() => Hotspot, { name: 'hotspot' })
-  findOne(
-    @Args('id', { type: () => String, nullable: true }) id?: string,
-    @Args('uuid', { type: () => String, nullable: true }) uuid?: string,
-  ) {
-    if (!id && !uuid) {
-      throw new Error('Either id or uuid must be provided');
+  findOne(@Args('id', { type: () => String, nullable: true }) id?: string) {
+    if (!id) {
+      throw new Error('You must provide an id');
     }
-    return this.hotspotsService.findOne(id, uuid);
+    return this.hotspotsService.findOne(id);
   }
 
   @Query(() => HotspotPaginatedResponse, { name: 'hotspotsByNeighborhood' })
@@ -67,6 +64,9 @@ export class HotspotsResolver {
     @Args('limit', { type: () => Int, defaultValue: DEFAULT_LIMIT })
     limit: number,
   ): Promise<HotspotPaginatedResponse> {
+    if (!neighborhood) {
+      throw new Error('Neighborhood is required');
+    }
     const result = await this.hotspotsService.findByNeighborhood(
       neighborhood,
       page,
@@ -89,6 +89,9 @@ export class HotspotsResolver {
     @Args('distance', { type: () => Float, defaultValue: MAX_DISTANCE_KM })
     distance: number,
   ): Promise<HotspotPaginatedResponse> {
+    if (!latitude || !longitude) {
+      throw new Error('Latitude and longitude are required');
+    }
     const result = await this.hotspotsService.findByProximity(
       latitude,
       longitude,
