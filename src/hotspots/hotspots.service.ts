@@ -57,9 +57,9 @@ export class HotspotsService {
     const repository = await getDataSourceRepository(Hotspot);
     const skip = (page - 1) * limit;
 
+    // Haversine formula to calculate the distance between two points on a sphere
     const baseQuery = repository
       .createQueryBuilder('hotspot')
-      .select('hotspot.*')
       .addSelect(
         `(
           :earthRadius * acos(
